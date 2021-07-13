@@ -22,18 +22,18 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
-import com.gamingmesh.jobs.economy.Economy;
+import com.gamingmesh.jobs.economy.CurrencyHandler;
 import org.bukkit.Bukkit;
 
 public class BufferedPaymentTask implements Runnable {
 
     private BufferedEconomy bufferedEconomy;
-    private Economy economy;
+    private CurrencyHandler currencyHandler;
     private BufferedPayment payment;
 
-    public BufferedPaymentTask(BufferedEconomy bufferedEconomy, Economy economy, BufferedPayment payment) {
+    public BufferedPaymentTask(BufferedEconomy bufferedEconomy, CurrencyHandler currencyHandler, BufferedPayment payment) {
 	this.bufferedEconomy = bufferedEconomy;
-	this.economy = economy;
+	this.currencyHandler = currencyHandler;
 	this.payment = payment;
     }
 
@@ -43,11 +43,11 @@ public class BufferedPaymentTask implements Runnable {
 	if (money > 0) {
 	    if (Jobs.getGCManager().isEconomyAsync()) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), () ->
-		    economy.depositPlayer(payment.getOfflinePlayer(), money));
+		    currencyHandler.depositPlayer(payment.getOfflinePlayer(), money));
 	    } else {
-		economy.depositPlayer(payment.getOfflinePlayer(), money);
+		currencyHandler.depositPlayer(payment.getOfflinePlayer(), money);
 	    }
-	} else if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -money)) {
+	} else if (!currencyHandler.withdrawPlayer(payment.getOfflinePlayer(), -money)) {
 	    bufferedEconomy.pay(payment);
 	}
 

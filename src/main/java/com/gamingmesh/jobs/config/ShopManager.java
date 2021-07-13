@@ -36,8 +36,8 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.ShopItem;
-import com.gamingmesh.jobs.stuff.GiveItem;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.GiveItem;
+import com.gamingmesh.jobs.util.Util;
 
 @SuppressWarnings("deprecation")
 public class ShopManager {

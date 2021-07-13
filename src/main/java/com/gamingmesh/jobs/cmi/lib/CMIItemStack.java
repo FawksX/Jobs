@@ -19,7 +19,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.Util;
 
 public class CMIItemStack {
 

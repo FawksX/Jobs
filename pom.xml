@@ -193,6 +193,11 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/WildStackerAPI-latest.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>4.0.3</version>
+		</dependency>
 		<!-- StackMob -->
 		<dependency>
 			<groupId>com.github.Nathat23</groupId>

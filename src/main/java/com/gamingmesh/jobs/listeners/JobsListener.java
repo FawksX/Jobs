@@ -71,7 +71,7 @@ import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.signs.SignTopType;
-import com.gamingmesh.jobs.signs.SignUtil;
+import com.gamingmesh.jobs.util.SignUtil;
 import com.gamingmesh.jobs.signs.JobsSign;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -81,12 +81,12 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.Util;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class JobsListener implements Listener {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     private final Map<UUID, Long> interactDelay = new HashMap<>();
 

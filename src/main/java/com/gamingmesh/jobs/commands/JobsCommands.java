@@ -23,8 +23,8 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
-import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.PageInfo;
+import com.gamingmesh.jobs.util.Util;
 
 public class JobsCommands implements CommandExecutor {
 

@@ -41,7 +41,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.TimeManage;
+import com.gamingmesh.jobs.util.TimeManage;
 
 public class JobsPlayer {
 

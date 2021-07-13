@@ -61,8 +61,8 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.stuff.PerformCommands;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.PerformCommands;
+import com.gamingmesh.jobs.util.Util;
 
 public class PlayerManager {
 
@@ -81,15 +81,6 @@ public class PlayerManager {
 
     public PlayerManager(Jobs plugin) {
 	this.plugin = plugin;
-    }
-
-    /**
-     * @deprecated Use {@link JobsPlayer#getPointsData} instead
-     * @return {@link com.gamingmesh.jobs.economy.PointsData}
-     */
-    @Deprecated
-    public com.gamingmesh.jobs.economy.PointsData getPointsData() {
-	return Jobs.getPointsData();
     }
 
     /**
@@ -691,53 +682,50 @@ public class PlayerManager {
 	}
 
 	if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
-	    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    if (!player.isOnline())
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+			if (!player.isOnline())
 			return;
 
-		    Firework f = player.getWorld().spawn(player.getLocation(), Firework.class);
-		    FireworkMeta fm = f.getFireworkMeta();
+			Firework f = player.getWorld().spawn(player.getLocation(), Firework.class);
+			FireworkMeta fm = f.getFireworkMeta();
 
-		    if (Jobs.getGCManager().UseRandom) {
+			if (Jobs.getGCManager().UseRandom) {
 			ThreadLocalRandom r = ThreadLocalRandom.current();
 			int rt = r.nextInt(4) + 1;
 			Type type = Type.BALL;
 
 			switch (rt) {
 			case 2:
-			    type = Type.BALL_LARGE;
-			    break;
+				type = Type.BALL_LARGE;
+				break;
 			case 3:
-			    type = Type.BURST;
-			    break;
+				type = Type.BURST;
+				break;
 			case 4:
-			    type = Type.CREEPER;
-			    break;
+				type = Type.CREEPER;
+				break;
 			case 5:
-			    type = Type.STAR;
-			    break;
+				type = Type.STAR;
+				break;
 			default:
-			    break;
+				break;
 			}
 
 			Color c1 = Util.getColor(r.nextInt(17) + 1);
 			Color c2 = Util.getColor(r.nextInt(17) + 1);
 
 			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
-			    .withFade(c2).with(type).trail(r.nextBoolean()).build();
+				.withFade(c2).with(type).trail(r.nextBoolean()).build();
 			fm.addEffect(effect);
 
 			fm.setPower(r.nextInt(2) + 1);
-		    } else {
+			} else {
 			fm.addEffect(Jobs.getGCManager().getFireworkEffect());
 			fm.setPower(Jobs.getGCManager().FireworkPower);
-		    }
+			}
 
-		    f.setFireworkMeta(fm);
-		}
-	    }, Jobs.getGCManager().ShootTime);
+			f.setFireworkMeta(fm);
+		}, Jobs.getGCManager().ShootTime);
 	}
 
 	String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
@@ -838,7 +826,7 @@ public class PlayerManager {
      * Performs command on level up
      * 
      * @param jPlayer {@link JobsPlayer}
-     * @param job {@link Job}
+     * @param prog {@link JobProgression}
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel) {
@@ -865,7 +853,7 @@ public class PlayerManager {
     /**
      * Checks whenever the given jobs player is under the max allowed jobs.
      * 
-     * @param player {@link JobsPlayer}
+     * @param jPlayer {@link JobsPlayer}
      * @param currentCount the current jobs size
      * @return true if the player is under the given jobs size
      */

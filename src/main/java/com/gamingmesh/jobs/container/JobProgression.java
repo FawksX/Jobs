@@ -21,7 +21,7 @@ package com.gamingmesh.jobs.container;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gamingmesh.jobs.stuff.TimeManage;
+import com.gamingmesh.jobs.util.TimeManage;
 
 public class JobProgression {
     private Job job;

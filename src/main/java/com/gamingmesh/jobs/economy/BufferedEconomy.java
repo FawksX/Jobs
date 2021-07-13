@@ -24,7 +24,7 @@ import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.util.ToggleBarHandling;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -39,25 +39,25 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class BufferedEconomy {
 
-    private Jobs plugin;
-    private Economy economy;
+    private final Jobs plugin;
+    private final CurrencyHandler currencyHandler;
 
     private final BlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
-    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
+    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<>());
 
     private OfflinePlayer serverTaxesAccount;
 
-    public BufferedEconomy(Jobs plugin, Economy economy) {
+    public BufferedEconomy(Jobs plugin, CurrencyHandler currencyHandler) {
 	this.plugin = plugin;
-	this.economy = economy;
+	this.currencyHandler = currencyHandler;
     }
 
     public Jobs getPlugin() {
 	return plugin;
     }
 
-    public Economy getEconomy() {
-	return economy;
+    public CurrencyHandler getEconomy() {
+	return currencyHandler;
     }
 
     /**
@@ -78,7 +78,7 @@ public class BufferedEconomy {
     }
 
     public String format(double money) {
-	return economy.format(money);
+	return currencyHandler.format(money);
     }
 
     /**
@@ -167,7 +167,7 @@ public class BufferedEconomy {
 
 	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && serverTaxesAccount != null) {
 		if (taxesAmount > 0) {
-		    economy.depositPlayer(serverTaxesAccount, taxesAmount);
+		    currencyHandler.depositPlayer(serverTaxesAccount, taxesAmount);
 		}
 
 		if (Jobs.getGCManager().ActionBarsMessageByDefault && serverTaxesAccount.isOnline()) {
@@ -177,9 +177,9 @@ public class BufferedEconomy {
 	    }
 
 	    boolean hasMoney = false;
-	    if (Jobs.getGCManager().UseServerAccount && economy.hasMoney(serverAccountName, totalAmount)) {
+	    if (Jobs.getGCManager().UseServerAccount && currencyHandler.hasMoney(serverAccountName, totalAmount)) {
 		hasMoney = true;
-		economy.withdrawPlayer(serverAccountName, totalAmount);
+		currencyHandler.withdrawPlayer(serverAccountName, totalAmount);
 	    }
 
 	    // Schedule all payments
@@ -206,9 +206,9 @@ public class BufferedEconomy {
 		}
 
 		if (Jobs.getGCManager().isEconomyAsync())
-		    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
+		    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, currencyHandler, payment), i);
 		else
-		    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
+		    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, currencyHandler, payment), i);
 
 		// Show players payment stuff
 		showPayment(payment);

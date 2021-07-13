@@ -18,7 +18,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.blockLoc;
+import com.gamingmesh.jobs.util.BlockLocation;
 
 public class BlockOwnerShip {
 
@@ -26,7 +26,7 @@ public class BlockOwnerShip {
 	private BlockTypes type;
 	private String metadataName = "";
 
-	private final Map<UUID, List<blockLoc>> blockOwnerShips = new HashMap<>();
+	private final Map<UUID, List<BlockLocation>> blockOwnerShips = new HashMap<>();
 
 	private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
@@ -70,7 +70,7 @@ public class BlockOwnerShip {
 		return metadataName;
 	}
 
-	public Map<UUID, List<blockLoc>> getBlockOwnerShips() {
+	public Map<UUID, List<BlockLocation>> getBlockOwnerShips() {
 		return blockOwnerShips;
 	}
 
@@ -114,8 +114,8 @@ public class BlockOwnerShip {
 			return ownershipFeedback.newReg;
 		}
 
-		List<blockLoc> ls = blockOwnerShips.getOrDefault(jPlayer.getUniqueId(), new ArrayList<>());
-		ls.add(new blockLoc(block.getLocation()));
+		List<BlockLocation> ls = blockOwnerShips.getOrDefault(jPlayer.getUniqueId(), new ArrayList<>());
+		ls.add(new BlockLocation(block.getLocation()));
 		blockOwnerShips.put(jPlayer.getUniqueId(), ls);
 		return ownershipFeedback.newReg;
 	}
@@ -135,10 +135,10 @@ public class BlockOwnerShip {
 			return false;
 		}
 
-		List<blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new ArrayList<>());
+		List<BlockLocation> ls = blockOwnerShips.getOrDefault(uuid, new ArrayList<>());
 		org.bukkit.Location blockLoc = block.getLocation();
 
-		for (blockLoc one : ls) {
+		for (BlockLocation one : ls) {
 			if (one.getLocation().equals(blockLoc)) {
 				block.removeMetadata(metadataName, plugin);
 				ls.remove(one);
@@ -150,11 +150,11 @@ public class BlockOwnerShip {
 	}
 
 	public int clear(UUID uuid) {
-		List<blockLoc> ls = blockOwnerShips.remove(uuid);
+		List<BlockLocation> ls = blockOwnerShips.remove(uuid);
 		if (ls == null)
 			return 0;
 
-		for (blockLoc one : ls) {
+		for (BlockLocation one : ls) {
 			one.getBlock().removeMetadata(metadataName, plugin);
 		}
 
@@ -166,7 +166,7 @@ public class BlockOwnerShip {
 	}
 
 	public int getTotal(UUID uuid) {
-		List<blockLoc> list = blockOwnerShips.get(uuid);
+		List<BlockLocation> list = blockOwnerShips.get(uuid);
 		return list == null ? 0 : list.size();
 	}
 
@@ -211,9 +211,9 @@ public class BlockOwnerShip {
 				continue;
 			}
 
-			List<blockLoc> blist = new ArrayList<>();
+			List<BlockLocation> blist = new ArrayList<>();
 			for (String oneL : ls) {
-				blockLoc bl = new blockLoc(oneL);
+				BlockLocation bl = new BlockLocation(oneL);
 				Block block = bl.getBlock();
 				if (block == null)
 					continue;
@@ -260,10 +260,10 @@ public class BlockOwnerShip {
 						: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
 		f.getConfig().set(path, null);
 
-		for (Map.Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
+		for (Map.Entry<UUID, List<BlockLocation>> one : blockOwnerShips.entrySet()) {
 			String full = "";
 
-			for (blockLoc oneL : one.getValue()) {
+			for (BlockLocation oneL : one.getValue()) {
 				if (!full.isEmpty())
 					full += ";";
 

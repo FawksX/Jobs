@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.util.ToggleBarHandling;
 
 public class BossBarManager {
 

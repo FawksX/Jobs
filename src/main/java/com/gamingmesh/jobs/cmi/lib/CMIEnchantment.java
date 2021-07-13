@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.bukkit.enchantments.Enchantment;
 
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.Util;
 
 public enum CMIEnchantment {
 

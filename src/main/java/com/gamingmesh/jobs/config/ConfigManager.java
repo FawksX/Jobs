@@ -58,7 +58,7 @@ import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.resources.jfep.ParseError;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.Util;
 
 public class ConfigManager {
 

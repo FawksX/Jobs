@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.cmi.lib.ConfigReader;
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.util.Util;
 
 public class LanguageManager {
 

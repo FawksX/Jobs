@@ -24,13 +24,13 @@ import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
 import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 import com.gamingmesh.jobs.cmi.lib.CMIReflections;
-import com.gamingmesh.jobs.cmi.lib.VersionChecker;
 import com.gamingmesh.jobs.gui.GuiManager;
 import com.gamingmesh.jobs.placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.placeholders.Placeholder;
 import com.gamingmesh.jobs.cmi.gui.GUIManager;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.signs.SignUtil;
+import com.gamingmesh.jobs.service.EconomyService;
+import com.gamingmesh.jobs.util.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
@@ -48,10 +48,10 @@ import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.*;
-import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
-import com.gamingmesh.jobs.stuff.complement.Complement;
-import com.gamingmesh.jobs.stuff.complement.Complement2;
+import com.gamingmesh.jobs.util.*;
+import com.gamingmesh.jobs.util.complement.JobsChatEvent;
+import com.gamingmesh.jobs.util.complement.Complement;
+import com.gamingmesh.jobs.util.complement.Complement2;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -95,6 +95,8 @@ public class Jobs extends JavaPlugin {
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
 
+    private static EconomyService economyService;
+
     private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
 
     private CMIScoreboardManager cmiScoreboardManager;
@@ -111,10 +113,7 @@ public class Jobs extends JavaPlugin {
 
     public static final Map<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
 
-    protected static VersionChecker versionCheckManager;
     protected static SelectionManager smanager;
-
-    private static PointsData pointsDatabase;
 
     public Complement getComplement() {
 	return complement;
@@ -233,19 +232,6 @@ public class Jobs extends JavaPlugin {
 	if (dbManager == null)
 	    dbManager = new JobsManager(instance);
 	return dbManager;
-    }
-
-    /**
-     * Gets the PointsData
-     * @deprecated Use {@link JobsPlayer#getPointsData()}
-     * @return {@link PointsData}
-     */
-    @Deprecated
-    public static PointsData getPointsData() {
-	if (pointsDatabase == null)
-	    pointsDatabase = new PointsData();
-
-	return pointsDatabase;
     }
 
     public static ShopManager getShopManager() {
@@ -645,7 +631,7 @@ public class Jobs extends JavaPlugin {
      * Sets the economy handler
      * @param eco - the economy handler
      */
-    public static void setEconomy(Economy eco) {
+    public static void setEconomy(CurrencyHandler eco) {
 	economy = new BufferedEconomy(instance, eco);
     }
 
@@ -655,17 +641,6 @@ public class Jobs extends JavaPlugin {
      */
     public static BufferedEconomy getEconomy() {
 	return economy;
-    }
-
-    /**
-     * Gets the version check manager
-     * @return the version check manager
-     */
-    public static VersionChecker getVersionCheckManager() {
-	if (versionCheckManager == null)
-	    versionCheckManager = new VersionChecker(instance);
-
-	return versionCheckManager;
     }
 
     @Override
@@ -688,8 +663,9 @@ public class Jobs extends JavaPlugin {
 
 		complement = new Complement2();
 
-
 		placeholderAPIEnabled = setupPlaceHolderAPI();
+
+		economyService = new EconomyService(this);
 
 	try {
 	    new YmlMaker(getFolder(), "shopItems.yml").saveDefaultConfig();
@@ -708,16 +684,12 @@ public class Jobs extends JavaPlugin {
 		new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
 	    }
 
-	    // register the listeners
-	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-		getServer().getPluginManager().registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
-	    }
 
+		getServer().getPluginManager().registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
 		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
-	    }
+
 
 	    HookManager.loadHooks();
 
@@ -727,8 +699,9 @@ public class Jobs extends JavaPlugin {
 
 	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 
-	    // register economy
-	    getServer().getScheduler().runTask(this, new HookEconomyTask(this));
+
+		Jobs.setEconomy(EconomyService.getInstance());
+		Jobs.consoleMsg("&e[Jobs] Successfully linked with Vault.");
 
 	    dao.loadBlockProtection();
 	    getExplore().load();
@@ -744,7 +717,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void reload() {
-	reload(false);
+    	reload(false);
     }
 
     public static void reload(boolean startup) {
@@ -795,17 +768,11 @@ public class Jobs extends JavaPlugin {
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
 
-	if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
-	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BREWING_STAND).ifPresent(BlockOwnerShip::load);
-	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BURNING_FURNACE).ifPresent(BlockOwnerShip::load);
-	} else {
-	    instance.getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
-	    instance.getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
-	}
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-	    instance.getBlockOwnerShip(CMIMaterial.BLAST_FURNACE).ifPresent(BlockOwnerShip::load);
-	    instance.getBlockOwnerShip(CMIMaterial.SMOKER).ifPresent(BlockOwnerShip::load);
-	}
+	instance.getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
+	instance.getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
+	instance.getBlockOwnerShip(CMIMaterial.BLAST_FURNACE).ifPresent(BlockOwnerShip::load);
+    instance.getBlockOwnerShip(CMIMaterial.SMOKER).ifPresent(BlockOwnerShip::load);
+
 
 	ToggleBarHandling.load();
 	usedSlots.clear();
@@ -1463,4 +1430,8 @@ public class Jobs extends JavaPlugin {
 	if (pageCount != 0)
 	    rm.show(sender);
     }
+
+    public static EconomyService getEconomyService() {
+    	return economyService;
+	}
 }

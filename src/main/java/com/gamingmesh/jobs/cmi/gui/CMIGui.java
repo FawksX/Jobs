@@ -15,7 +15,7 @@ import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.commands.JobsCommands;
-import com.gamingmesh.jobs.stuff.PageInfo;
+import com.gamingmesh.jobs.util.PageInfo;
 
 public class CMIGui {
 
