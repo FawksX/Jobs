@@ -3,7 +3,7 @@ package com.gamingmesh.jobs.dao;
 import java.io.IOException;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
 
 public class JobsManager {
     private JobsDAO dao;

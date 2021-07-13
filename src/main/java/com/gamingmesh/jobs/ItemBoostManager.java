@@ -13,10 +13,10 @@ import java.util.Set;
 import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIEnchantment;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;

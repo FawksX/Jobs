@@ -23,6 +23,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
+import org.bukkit.Bukkit;
 
 public class BufferedPaymentTask implements Runnable {
 
@@ -41,7 +42,7 @@ public class BufferedPaymentTask implements Runnable {
 	double money = payment.get(CurrencyType.MONEY);
 	if (money > 0) {
 	    if (Jobs.getGCManager().isEconomyAsync()) {
-		org.bukkit.Bukkit.getScheduler().scheduleSyncDelayedTask(bufferedEconomy.getPlugin(), () ->
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), () ->
 		    economy.depositPlayer(payment.getOfflinePlayer(), money));
 	    } else {
 		economy.depositPlayer(payment.getOfflinePlayer(), money);

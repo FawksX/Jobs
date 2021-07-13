@@ -36,10 +36,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.CMIEnchantment;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.resources.jfep.Parser;

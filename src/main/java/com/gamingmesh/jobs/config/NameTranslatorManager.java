@@ -9,10 +9,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.CMIEnchantment;
+import com.gamingmesh.jobs.cmi.lib.CMIEntityType;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;

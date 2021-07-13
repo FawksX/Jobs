@@ -32,10 +32,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.signs.SignTopType;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;

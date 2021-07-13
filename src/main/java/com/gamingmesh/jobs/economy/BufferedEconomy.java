@@ -19,8 +19,8 @@
 package com.gamingmesh.jobs.economy;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;

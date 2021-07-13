@@ -1,8 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.ItemReflection;
-import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.ItemReflection;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.config.ConfigManager.KeyValues;

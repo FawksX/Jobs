@@ -20,7 +20,7 @@ package com.gamingmesh.jobs.container;
 
 import org.bukkit.ChatColor;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 
 /**
  * Container class for titles

@@ -13,8 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;

@@ -3,7 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 import com.gamingmesh.jobs.commands.Cmd;
 
 public class entitylist implements Cmd {

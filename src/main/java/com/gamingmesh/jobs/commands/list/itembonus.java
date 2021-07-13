@@ -17,9 +17,9 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
 
 public class itembonus implements Cmd {
 

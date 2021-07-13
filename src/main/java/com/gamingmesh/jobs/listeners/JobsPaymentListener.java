@@ -23,6 +23,13 @@ import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIEnchantment;
+import com.gamingmesh.jobs.cmi.lib.CMIEntityType;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ItemManager;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
@@ -40,6 +47,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
@@ -1150,7 +1158,7 @@ public final class JobsPaymentListener implements Listener {
 	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 
 	    if (damage != null) {
-		double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
+		double perc = (damage * 100D) / lVictim.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
 
 		damageDealtByPlayers.invalidate(lVictimUUID);
 

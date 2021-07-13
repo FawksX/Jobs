@@ -66,13 +66,13 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.Signs.SignTopType;
-import com.gamingmesh.jobs.Signs.SignUtil;
-import com.gamingmesh.jobs.Signs.jobsSign;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.Version;
+import com.gamingmesh.jobs.signs.SignTopType;
+import com.gamingmesh.jobs.signs.SignUtil;
+import com.gamingmesh.jobs.signs.JobsSign;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ArmorTypes;
@@ -285,7 +285,7 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	jobsSign signInfo = new jobsSign();
+	JobsSign signInfo = new JobsSign();
 
 	signInfo.setLoc(block.getLocation());
 	signInfo.setNumber(number);

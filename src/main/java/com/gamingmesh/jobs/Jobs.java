@@ -18,18 +18,19 @@
 
 package com.gamingmesh.jobs;
 
-import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.VersionChecker;
-import com.gamingmesh.jobs.Gui.GuiManager;
-import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
-import com.gamingmesh.jobs.Placeholders.Placeholder;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
+import com.gamingmesh.jobs.cmi.lib.Version;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.CMIReflections;
+import com.gamingmesh.jobs.cmi.lib.VersionChecker;
+import com.gamingmesh.jobs.gui.GuiManager;
+import com.gamingmesh.jobs.placeholders.PlaceholderAPIHook;
+import com.gamingmesh.jobs.placeholders.Placeholder;
+import com.gamingmesh.jobs.cmi.gui.GUIManager;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
@@ -50,7 +51,6 @@ import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.*;
 import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.stuff.complement.Complement;
-import com.gamingmesh.jobs.stuff.complement.Complement1;
 import com.gamingmesh.jobs.stuff.complement.Complement2;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
@@ -97,8 +97,6 @@ public class Jobs extends JavaPlugin {
 
     private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
 
-    private boolean kyoriSupported = false;
-
     private CMIScoreboardManager cmiScoreboardManager;
     private Complement complement;
     private GuiManager guiManager;
@@ -120,10 +118,6 @@ public class Jobs extends JavaPlugin {
 
     public Complement getComplement() {
 	return complement;
-    }
-
-    public boolean isKyoriSupported() {
-	return kyoriSupported;
     }
 
     /**
@@ -363,17 +357,9 @@ public class Jobs extends JavaPlugin {
 	return cmiScoreboardManager;
     }
 
-    // TODO Get rid of this entirely from project
-    // There are better implementations than this
-    protected static Jobs instance;
-
-    /**
-     * This shouldn't be used.
-     * @return returns this class object instance
-     */
-    @Deprecated
+    private static Jobs instance;
     public static Jobs getInstance() {
-	return instance;
+    	return instance;
     }
 
     /**
@@ -686,14 +672,24 @@ public class Jobs extends JavaPlugin {
     public void onEnable() {
 	instance = this;
 
-	try {
-	    Class.forName("net.kyori.adventure.text.Component");
-	    org.bukkit.inventory.meta.ItemMeta.class.getDeclaredMethod("displayName");
-	    kyoriSupported = true;
-	} catch (NoSuchMethodException | ClassNotFoundException e) {
-	}
+		try {
+			Class.forName("com.destroystokyo.paper.PaperConfig");
+		} catch (ClassNotFoundException e) {
+			this.getSLF4JLogger().error("This plugin requires Paper to run! Disabling...");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 
-	placeholderAPIEnabled = setupPlaceHolderAPI();
+		if(Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
+			this.getSLF4JLogger().error("This plugin requires 1.16+ to run! Disabling...");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
+		complement = new Complement2();
+
+
+		placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
 	    new YmlMaker(getFolder(), "shopItems.yml").saveDefaultConfig();
@@ -729,12 +725,6 @@ public class Jobs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PistonProtectionListener(), this);
 	    }
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
-		complement = new Complement2();
-		//getServer().getPluginManager().registerEvents(new KyoriChatEvent(this), this);
-	    } else {
-		complement = new Complement1();
-	    }
 	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 
 	    // register economy
@@ -748,7 +738,7 @@ public class Jobs extends JavaPlugin {
 	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
 	} catch (Throwable e) {
 	    e.printStackTrace();
-	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
+	    this.getSLF4JLogger().error("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    setEnabled(false);
 	}
     }
@@ -764,7 +754,7 @@ public class Jobs extends JavaPlugin {
 
 	    HandlerList.unregisterAll(instance);
 
-	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
+	    GUIManager.registerListener();
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
 		pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);

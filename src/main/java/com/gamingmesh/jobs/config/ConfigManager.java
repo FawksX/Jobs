@@ -37,12 +37,12 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIEnchantment;
+import com.gamingmesh.jobs.cmi.lib.CMIEntityType;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;

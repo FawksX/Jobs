@@ -3,7 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.signs.SignTopType;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 

@@ -5,9 +5,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceHolders;
-import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceholderType;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
+import com.gamingmesh.jobs.placeholders.Placeholder.JobsPlaceHolders;
+import com.gamingmesh.jobs.placeholders.Placeholder.JobsPlaceholderType;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.stuff.PageInfo;
 

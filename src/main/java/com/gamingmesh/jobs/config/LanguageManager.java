@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class LanguageManager {

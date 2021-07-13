@@ -7,8 +7,8 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
 import com.gamingmesh.jobs.container.Title;
 
 public class TitleManager {

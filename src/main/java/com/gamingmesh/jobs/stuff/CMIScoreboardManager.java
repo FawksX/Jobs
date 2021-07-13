@@ -13,9 +13,9 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIReflections;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
 
 public class CMIScoreboardManager {

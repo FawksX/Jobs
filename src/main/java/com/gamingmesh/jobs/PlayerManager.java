@@ -39,9 +39,9 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
+import com.gamingmesh.jobs.cmi.lib.Version;
+import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
+import com.gamingmesh.jobs.cmi.lib.CMIReflections;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;

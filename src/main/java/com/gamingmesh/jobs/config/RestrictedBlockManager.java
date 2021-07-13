@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIItemStack;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.ItemManager;
+import com.gamingmesh.jobs.cmi.lib.CMIItemStack;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ConfigReader;
+import com.gamingmesh.jobs.cmi.lib.ItemManager;
 
 public class RestrictedBlockManager {
 

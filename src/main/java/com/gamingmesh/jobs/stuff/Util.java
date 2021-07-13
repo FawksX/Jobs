@@ -18,14 +18,8 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -34,8 +28,8 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.container.JobsWorld;
 
 public class Util {
@@ -55,64 +49,8 @@ public class Util {
 	return blocks;
     }
 
-    public static String getRealType(Entity entity) {
-
-	if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
-	    return entity.getType().name();
-	}
-
-	String name = entity.getType().name();
-	switch (entity.getType().toString()) {
-	case "GUARDIAN":
-	    org.bukkit.entity.Guardian g = (org.bukkit.entity.Guardian) entity;
-	    if (g.isElder())
-		name = "GuardianElder";
-	    break;
-	case "HORSE":
-	    Horse horse = (Horse) entity;
-	    if (horse.getVariant().toString().equals("UNDEAD_HORSE"))
-		name = "HorseZombie";
-	    if (horse.getVariant().toString().equals("SKELETON_HORSE"))
-		name = "HorseSkeleton";
-	    break;
-	case "SKELETON":
-	    Skeleton skeleton = (Skeleton) entity;
-	    if (skeleton.getSkeletonType().toString().equals("WITHER"))
-		name = "SkeletonWither";
-	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && skeleton.getSkeletonType().toString().equals("STRAY"))
-		name = "SkeletonStray";
-	    break;
-	case "ZOMBIE":
-	    Zombie zombie = (Zombie) entity;
-	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1)) {
-		if (zombie.isVillager() && zombie.getVillagerProfession().toString().equals("HUSK"))
-		    return "ZombieVillager";
-		if (zombie.getVillagerProfession().toString().equals("HUSK"))
-		    return "ZombieHusk";
-	    } else {
-		if (zombie.isVillager())
-		    return "ZombieVillager";
-	    }
-	    break;
-	default:
-	    break;
-	}
-
-	return name;
-    }
-
-    public static double getMaxHealth(LivingEntity entity) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-	}
-	return entity.getMaxHealth();
-    }
-
     public static short getDurability(ItemStack item) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 	    return (short) ((Damageable) item.getItemMeta()).getDamage();
-	}
-	return item.getDurability();
     }
 
     public static void setSkullOwner(SkullMeta meta, OfflinePlayer player) {

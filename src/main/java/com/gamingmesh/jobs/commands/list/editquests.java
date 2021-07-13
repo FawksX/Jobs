@@ -13,12 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemReflection;
-import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
+import com.gamingmesh.jobs.cmi.lib.CMIEntityType;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.ItemReflection;
+import com.gamingmesh.jobs.cmi.lib.RawMessage;
+import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;

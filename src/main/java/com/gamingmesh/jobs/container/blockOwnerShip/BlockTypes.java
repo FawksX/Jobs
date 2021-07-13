@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs.container.blockOwnerShip;
 
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 
 public enum BlockTypes {
 

@@ -4,15 +4,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.hooks.McMMO.McMMO1_X_listener;
-import com.gamingmesh.jobs.hooks.McMMO.McMMO2_X_listener;
-import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
-import com.gamingmesh.jobs.hooks.MyPet.MyPetManager;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
-import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
-import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
-import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
+import com.gamingmesh.jobs.hooks.mcmmo.McMMO1_X_listener;
+import com.gamingmesh.jobs.hooks.mcmmo.McMMO2_X_listener;
+import com.gamingmesh.jobs.hooks.mcmmo.McMMOManager;
+import com.gamingmesh.jobs.hooks.mypet.MyPetManager;
+import com.gamingmesh.jobs.hooks.mythicmobs.MythicMobInterface;
+import com.gamingmesh.jobs.hooks.mythicmobs.MythicMobs4;
+import com.gamingmesh.jobs.hooks.worldguard.WorldGuardManager;
+import com.gamingmesh.jobs.hooks.stackmob.StackMobHandler;
+import com.gamingmesh.jobs.hooks.wildstacker.WildStackerHandler;
 
 public class HookManager {
 
