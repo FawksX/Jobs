@@ -170,7 +170,10 @@ public class PermissionManager {
 
 	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
 	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    permissions = getAll(player);
+	    if(permissions == null) {
+	    	permissions = new HashMap<>();
+		}
+	    permissions.put(perm, player.hasPermission(perm));
 	    jPlayer.setPermissionsCache(permissions);
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}

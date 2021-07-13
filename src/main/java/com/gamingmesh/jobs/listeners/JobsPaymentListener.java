@@ -359,7 +359,7 @@ public final class JobsPaymentListener implements Listener {
 	    Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 	final Block block = event.getBlock();
 
@@ -1458,12 +1458,12 @@ public final class JobsPaymentListener implements Listener {
     public void onPlayerEat(FoodLevelChangeEvent event) {
 	HumanEntity human = event.getEntity();
 
-	if (event.getFoodLevel() <= human.getFoodLevel() || !(human instanceof Player)
-	    || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
-	    return;
+	if (!(human instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC")) {
+		return;
+	}
 
 	Player player = (Player) human;
-	if (!player.isOnline())
+	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
 	    return;
 
 	// check if in creative
@@ -1696,12 +1696,16 @@ public final class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-		if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player),
-				"jobs.paycreative")) {
-			return false;
+		if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE) {
+			return true;
 		}
 
-	return true;
+		if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative")) {
+			return true;
+		}
+
+		return player.getGameMode() != GameMode.CREATIVE;
+
     }
 
     // Prevent item durability loss

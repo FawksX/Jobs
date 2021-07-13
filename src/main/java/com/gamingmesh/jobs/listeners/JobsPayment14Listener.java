@@ -62,7 +62,7 @@ public final class JobsPayment14Listener implements Listener {
 	}
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
 	if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
 	    return;

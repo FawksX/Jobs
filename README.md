@@ -1,3 +1,6 @@
+# Jobs, but without CMILib :)
+
+
 [![GitHub license](https://img.shields.io/badge/license-Apache-brightgreen.svg)](https://github.com/Zrips/Jobs/blob/master/LICENSE-Apache.txt) [![GitHub license](https://img.shields.io/badge/license-GNU--GPL-brightgreen.svg)](https://github.com/Zrips/Jobs/blob/master/LICENSE-GNU-GPL.txt)
 
 [![GitHub Pre-Release](https://img.shields.io/github/release-pre/Zrips/Jobs.svg)](https://github.com/Zrips/Jobs/releases) [![Github All Releases](https://img.shields.io/github/downloads/Zrips/Jobs/total.svg)](https://github.com/Zrips/Jobs/releases)
