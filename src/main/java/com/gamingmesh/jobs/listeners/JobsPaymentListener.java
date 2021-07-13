@@ -1696,8 +1696,10 @@ public final class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-	if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !player.hasPermission("jobs.paycreative"))
-	    return false;
+		if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player),
+				"jobs.paycreative")) {
+			return false;
+		}
 
 	return true;
     }
