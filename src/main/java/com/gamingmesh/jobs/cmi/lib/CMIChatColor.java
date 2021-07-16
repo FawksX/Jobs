@@ -219,9 +219,9 @@ public class CMIChatColor {
 
 		StringBuilder magic = new StringBuilder("§x");
 		for (char c : string.substring(2, string.length() - 1).toCharArray()) {
-		    magic.append('§').append(c);
+		    magic.append("§").append(c);
 		    if (string.substring(2, string.length() - 1).length() == 3)
-			magic.append('§').append(c);
+			magic.append("§").append(c);
 		}
 		text = text.replace(string, magic.toString());
 	    }
@@ -235,7 +235,7 @@ public class CMIChatColor {
 		String gex = cn.getHex();
 		StringBuilder magic = new StringBuilder("§x");
 		for (char c : gex.toCharArray()) {
-		    magic.append('§').append(c);
+		    magic.append("§").append(c);
 		}
 		text = text.replace(nameMatch.group(), magic.toString());
 	    }

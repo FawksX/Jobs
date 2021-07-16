@@ -8,7 +8,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.util.Util;
 
-import io.papermc.paper.chat.ChatComposer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextReplacementConfig;
 
@@ -54,9 +53,10 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 			//.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
 
 		// 4th attempt: composeChat -> doing nothing
-		event.message(ChatComposer.DEFAULT
-				.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
-				.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
+
+		// event.message(ChatComposer.DEFAULT
+		//		.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
+		//		.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
 	}
 
 	// Changing chat prefix variable to job name
@@ -76,8 +76,8 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		event.message(ChatComposer.DEFAULT
-				.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
-				.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
+		// event.message(ChatComposer.DEFAULT
+		//		.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
+		//		.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
 	}
 }
