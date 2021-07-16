@@ -30,7 +30,7 @@ public class PlaceholdersCmd implements Cmd {
 	    } else {
 		player = Bukkit.getPlayer(args[0]);
 		if (player == null) {
-		    Jobs.consoleMsg("&cPlayer cannot be null!");
+		    Jobs.logger().error("Player cannot be null!");
 		    return false;
 		}
 	    }

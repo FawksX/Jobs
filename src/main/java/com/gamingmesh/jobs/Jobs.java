@@ -21,10 +21,10 @@ package com.gamingmesh.jobs;
 import com.gamingmesh.jobs.cmi.lib.RawMessage;
 import com.gamingmesh.jobs.cmi.lib.Version;
 import com.gamingmesh.jobs.cmi.lib.ActionBarManager;
-import com.gamingmesh.jobs.cmi.lib.CMIChatColor;
 import com.gamingmesh.jobs.cmi.lib.CMIMaterial;
 import com.gamingmesh.jobs.cmi.lib.CMIReflections;
 import com.gamingmesh.jobs.gui.GuiManager;
+import com.gamingmesh.jobs.listeners.Listener1_9;
 import com.gamingmesh.jobs.placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.placeholders.Placeholder;
 import com.gamingmesh.jobs.cmi.gui.GUIManager;
@@ -55,6 +55,8 @@ import com.gamingmesh.jobs.util.complement.Complement2;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -62,15 +64,23 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Jobs extends JavaPlugin {
+
+	public static ExecutorService SYNC_EXECUTOR = MoreExecutors.newDirectExecutorService();
+	public static ExecutorService ASYNC_EXECUTOR = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat(Jobs.class.getSimpleName() + " Async Executor #%d").build());
 
     private static PlayerManager pManager;
     private static JobsCommands cManager;
@@ -94,6 +104,7 @@ public class Jobs extends JavaPlugin {
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
+    private static org.slf4j.Logger logger;
 
     private static EconomyService economyService;
 
@@ -194,14 +205,14 @@ public class Jobs extends JavaPlugin {
     }
 
     private boolean setupPlaceHolderAPI() {
-	org.bukkit.plugin.Plugin papi = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+	Plugin papi = getServer().getPluginManager().getPlugin("PlaceholderAPI");
 	if (papi == null || !papi.isEnabled())
 	    return false;
 
 	try {
 	    if (Integer.parseInt(papi
 		.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
-		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+			logger().info("&e[Jobs] PlaceholderAPI hooked.");
 	    }
 	} catch (NumberFormatException ex) {
 	    return false;
@@ -382,7 +393,7 @@ public class Jobs extends JavaPlugin {
      * Retrieves the plugin logger
      * @return the plugin logger
      */
-    public static Logger getPluginLogger() {
+    public static java.util.logging.Logger getPluginLogger() {
 	return instance.getLogger();
     }
 
@@ -418,7 +429,7 @@ public class Jobs extends JavaPlugin {
 
     /**
      * Returns the list of available jobs.
-     * 
+     *
      * @return an unmodifiable list of jobs
      */
     public static List<Job> getJobs() {
@@ -447,28 +458,27 @@ public class Jobs extends JavaPlugin {
      * @return the job that matches the name
      */
     public static Job getJob(String jobName) {
-	for (Job job : jobs) {
-	    if (job.getName().equalsIgnoreCase(jobName) || job.getJobFullName().equalsIgnoreCase(jobName))
-		return job;
-	}
-
-	return null;
+    	for (Job job : jobs) {
+    		if (job.getName().equalsIgnoreCase(jobName) || job.getJobFullName().equalsIgnoreCase(jobName)) {
+				return job;
+			}
+    	}
+    	return null;
     }
 
     /**
      * Returns a job by identifier.
-     * 
+     *
      * @param id the id of job
      * @return {@link Job}
      */
     public static Job getJob(int id) {
-	for (Job job : jobs) {
-	    if (job.getId() == id) {
-		return job;
-	    }
-	}
-
-	return null;
+    	for (Job job : jobs) {
+    		if (job.getId() == id) {
+    			return job;
+    		}
+    	}
+    	return null;
     }
 
     public boolean isPlaceholderAPIEnabled() {
@@ -511,9 +521,10 @@ public class Jobs extends JavaPlugin {
 
 	    return time;
 	}).thenAccept(t -> {
-	    if (!getPlayerManager().getPlayersCache().isEmpty())
-		consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
-		    ((int) (((System.currentTimeMillis() - t) / 1000d) * 100) / 100D));
+	    if (!getPlayerManager().getPlayersCache().isEmpty()) {
+			logger.info("Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
+					((int) (((System.currentTimeMillis() - t) / 1000d) * 100) / 100D));
+		}
 	});
     }
 
@@ -536,7 +547,7 @@ public class Jobs extends JavaPlugin {
 //    Jobs.getJobsDAO().saveBlockProtection();
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+		logger.error("Can't write data to data base, please send error log to dev's.");
 	    return;
 	}
 
@@ -628,14 +639,6 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * Sets the economy handler
-     * @param eco - the economy handler
-     */
-    public static void setEconomy(CurrencyHandler eco) {
-	economy = new BufferedEconomy(instance, eco);
-    }
-
-    /**
      * Gets the economy handler
      * @return the economy handler
      */
@@ -646,17 +649,19 @@ public class Jobs extends JavaPlugin {
     @Override
     public void onEnable() {
 	instance = this;
+	logger = this.getSLF4JLogger();
+	economy = new BufferedEconomy(instance, EconomyService.getInstance());
 
 		try {
 			Class.forName("com.destroystokyo.paper.PaperConfig");
 		} catch (ClassNotFoundException e) {
-			this.getSLF4JLogger().error("This plugin requires Paper to run! Disabling...");
+			logger.error("This plugin requires Paper to run! Disabling...");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 
 		if(Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
-			this.getSLF4JLogger().error("This plugin requires 1.16+ to run! Disabling...");
+			logger.error("This plugin requires 1.16+ to run! Disabling...");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -674,41 +679,38 @@ public class Jobs extends JavaPlugin {
 	    bbManager = new BossBarManager(this);
 
 	    Optional.ofNullable(getCommand("jobs")).ifPresent(j -> {
-		j.setExecutor(getCommandManager());
-		j.setTabCompleter(new TabComplete());
+	    	j.setExecutor(getCommandManager());
+	    	j.setTabCompleter(new TabComplete());
 	    });
 
 	    startup();
 
 	    if (getGCManager().SignsEnabled) {
-		new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
+	    	new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
 	    }
 
-
-		getServer().getPluginManager().registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
-	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
-	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
-
+	    registerListeners(
+	    		Listener1_9.class,
+				JobsListener.class,
+				JobsPaymentListener.class,
+				JobsPayment14Listener.class,
+				JobsChatEvent.class
+		);
 
 	    HookManager.loadHooks();
 
 	    if (getGCManager().useBlockProtection) {
-		getServer().getPluginManager().registerEvents(new PistonProtectionListener(), this);
+	    	registerListeners(PistonProtectionListener.class);
 	    }
 
 	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
-
-
-		Jobs.setEconomy(EconomyService.getInstance());
-		Jobs.consoleMsg("&e[Jobs] Successfully linked with Vault.");
 
 	    dao.loadBlockProtection();
 	    getExplore().load();
 	    getCommandManager().fillCommands();
 	    getDBManager().getDB().triggerTableIdUpdate();
 
-	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
+	    logger.info("Plugin has been enabled successfully.");
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	    this.getSLF4JLogger().error("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
@@ -723,24 +725,18 @@ public class Jobs extends JavaPlugin {
     public static void reload(boolean startup) {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
-	    org.bukkit.plugin.PluginManager pm = instance.getServer().getPluginManager();
-
 	    HandlerList.unregisterAll(instance);
-
 	    GUIManager.registerListener();
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-		pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
-	    }
-
-	    pm.registerEvents(new JobsListener(instance), instance);
-	    pm.registerEvents(new JobsPaymentListener(instance), instance);
-	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-		pm.registerEvents(new JobsPayment14Listener(), instance);
-	    }
+		Jobs.getInstance().registerListeners(
+				Listener1_9.class,
+				JobsListener.class,
+				JobsPaymentListener.class,
+				JobsPayment14Listener.class
+		);
 
 	    if (getGCManager().useBlockProtection) {
-		pm.registerEvents(new PistonProtectionListener(), instance);
+		Jobs.getInstance().registerListeners(PistonProtectionListener.class);
 	    }
 
 	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
@@ -844,7 +840,7 @@ public class Jobs extends JavaPlugin {
      * @see #action(JobsPlayer, ActionInfo, Block, Entity, LivingEntity)
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info) {
-	action(jPlayer, info, null, null, null);
+    	action(jPlayer, info, null, null, null);
     }
 
     /**
@@ -856,7 +852,7 @@ public class Jobs extends JavaPlugin {
      * @see #action(JobsPlayer, ActionInfo, Block, Entity, LivingEntity)
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block) {
-	action(jPlayer, info, block, null, null);
+    	action(jPlayer, info, block, null, null);
     }
 
     /**
@@ -868,7 +864,7 @@ public class Jobs extends JavaPlugin {
      * @see #action(JobsPlayer, ActionInfo, Block, Entity, LivingEntity)
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent) {
-	action(jPlayer, info, null, ent, null);
+    	action(jPlayer, info, null, ent, null);
     }
 
     /**
@@ -882,7 +878,7 @@ public class Jobs extends JavaPlugin {
      * @see #action(JobsPlayer, ActionInfo, Block, Entity, LivingEntity)
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent, LivingEntity victim) {
-	action(jPlayer, info, null, ent, victim);
+    	action(jPlayer, info, null, ent, victim);
     }
 
     /**
@@ -1059,7 +1055,7 @@ public class Jobs extends JavaPlugin {
 				expInt++;
 			}
 
-			if (expInt < 0 && getPlayerExperience(player) < -expInt) {
+			if (expInt < 0 && ExpUtil.getPlayerExperience(player) < -expInt) {
 			    player.setLevel(0);
 			    player.setTotalExperience(0);
 			    player.setExp(0);
@@ -1173,7 +1169,7 @@ public class Jobs extends JavaPlugin {
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Throwable e) {
 		    e.printStackTrace();
-		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+		    logger.error("Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
 		Map<CurrencyType, Double> payments = new HashMap<>();
@@ -1291,46 +1287,6 @@ public class Jobs extends JavaPlugin {
 	return true;
     }
 
-    private static int getPlayerExperience(Player player) {
-	return (expToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
-    }
-
-    // total xp calculation based by lvl
-    private static int expToLevel(int level) {
-	if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
-	    if (level <= 16)
-		return 17 * level;
-	    else if (level <= 31)
-		return ((3 * level * level) / 2) - ((59 * level) / 2) + 360;
-	    else
-		return ((7 * level * level) / 2) - ((303 * level) / 2) + 2220;
-	}
-	if (level <= 16)
-	    return (level * level) + (6 * level);
-	else if (level <= 31)
-	    return (int) ((2.5 * level * level) - (40.5 * level) + 360);
-	else
-	    return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
-    }
-
-    // xp calculation for one current lvl
-    private static int deltaLevelToExp(int level) {
-	if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
-	    if (level <= 16)
-		return 17;
-	    else if (level <= 31)
-		return 3 * level - 31;
-	    else
-		return 7 * level - 155;
-	}
-	if (level <= 16)
-	    return 2 * level + 7;
-	else if (level <= 31)
-	    return 5 * level - 38;
-	else
-	    return 9 * level - 158;
-    }
-
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
 	double expPayment = payment.get(CurrencyType.EXP);
 
@@ -1364,27 +1320,8 @@ public class Jobs extends JavaPlugin {
 	    getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 
-    public static void consoleMsg(String msg) {
-	if (msg != null) {
-	    Bukkit.getServer().getConsoleSender().sendMessage(CMIChatColor.translate(msg));
-	}
-    }
-
     public static SelectionManager getSelectionManager() {
-	return smanager;
-    }
-
-    public static boolean hasPermission(Object sender, String perm, boolean rawEnable) {
-	if (!(sender instanceof Player) || ((Player) sender).hasPermission(perm))
-	    return true;
-
-	if (!rawEnable) {
-	    ((Player) sender).sendMessage(lManager.getMessage("general.error.permission"));
-	    return false;
-	}
-	new RawMessage().addText(lManager.getMessage("general.error.permission")).addHover("&2" + perm).show((Player) sender);
-	return false;
-
+    	return smanager;
     }
 
     public void showPagination(CommandSender sender, PageInfo pi, String cmd) {
@@ -1431,7 +1368,24 @@ public class Jobs extends JavaPlugin {
 	    rm.show(sender);
     }
 
+    public static Logger logger() {
+    	return logger;
+	}
+
     public static EconomyService getEconomyService() {
     	return economyService;
+	}
+
+	@SafeVarargs
+	public final void registerListeners(Class<? extends Listener>... listeners) {
+    	for(Class<? extends Listener> listener : listeners) {
+    		try {
+				logger().info("Registering Listener " + listener.getSimpleName());
+				Bukkit.getPluginManager().registerEvents(listener.getConstructor().newInstance(), getInstance());
+			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+    			logger().error("Failed to instantiate class " + listener.getSimpleName());
+    			e.printStackTrace();
+			}
+		}
 	}
 }

@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.Set;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ArchiveCmd implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.admin.archive", true)) {
+	    if (!PermissionUtil.hasPermission(sender, "jobs.command.admin.archive", true)) {
 		return true;
 	    }
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);

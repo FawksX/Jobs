@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +21,7 @@ public class PointsCmd implements Cmd {
 
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.admin.points", true)) {
+	    if (!PermissionUtil.hasPermission(sender, "jobs.command.admin.points", true)) {
 		return true;
 	    }
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);

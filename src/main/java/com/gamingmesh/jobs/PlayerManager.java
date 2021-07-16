@@ -331,7 +331,7 @@ public class PlayerManager {
 	    i++;
 
 	    if (y++ >= 1000) {
-		Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
+	    	Jobs.logger().info("Saved " + i + "/" + total + " players data");
 		y = 0;
 	    }
 	}
@@ -1093,30 +1093,27 @@ public class PlayerManager {
 	if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
 	    return;
 
-	plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		if (!player.isOnline())
-		    return;
+	plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+	if (!player.isOnline())
+		return;
 
-		JobsPlayer jPlayer = getJobsPlayer(player);
-		if (jPlayer == null || player.hasPermission("jobs.*"))
-		    return;
+	JobsPlayer jPlayer = getJobsPlayer(player);
+	if (jPlayer == null || player.hasPermission("jobs.*"))
+		return;
 
-		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-		short playerMaxJobs = (short) jPlayer.progression.size();
+	int confMaxJobs = Jobs.getGCManager().getMaxJobs();
+	short playerMaxJobs = (short) jPlayer.progression.size();
 
-		if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
-		    return;
+	if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
+		return;
 
-		for (Job one : Jobs.getJobs()) {
-		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
-			continue;
+	for (Job one : Jobs.getJobs()) {
+		if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
+		continue;
 
-		    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
-			joinJob(jPlayer, one);
-		}
-	    }
+		if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
+		joinJob(jPlayer, one);
+	}
 	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
     }
 }

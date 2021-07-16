@@ -86,13 +86,9 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class JobsListener implements Listener {
 
-    private final Jobs plugin;
+    private static final Jobs plugin = Jobs.getInstance();
 
     private final Map<UUID, Long> interactDelay = new HashMap<>();
-
-    public JobsListener(Jobs plugin) {
-	this.plugin = plugin;
-    }
 
     private boolean isInteractOk(Player player) {
 	Long delay = interactDelay.get(player.getUniqueId());
@@ -104,12 +100,6 @@ public class JobsListener implements Listener {
 	long time = System.currentTimeMillis() - delay;
 	interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
 	return time > 100;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onJoin(PlayerJoinEvent event) {
-	if (Jobs.getGCManager().isShowNewVersion() && event.getPlayer().hasPermission("jobs.versioncheck"))
-	    Jobs.getVersionCheckManager().VersionCheck(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

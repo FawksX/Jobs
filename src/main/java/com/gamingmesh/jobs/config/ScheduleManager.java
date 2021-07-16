@@ -202,7 +202,8 @@ public class ScheduleManager {
 	    BOOSTSCHEDULE.add(sched);
 	}
 
-	if (!BOOSTSCHEDULE.isEmpty())
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + BOOSTSCHEDULE.size() + " schedulers!");
+	if (!BOOSTSCHEDULE.isEmpty()) {
+		Jobs.logger().info("Loaded " + BOOSTSCHEDULE.size() + " schedulers!");
+	}
     }
 }

@@ -18,7 +18,6 @@
 
 package com.gamingmesh.jobs.listeners;
 
-import com.gamingmesh.jobs.CMILib.*;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
@@ -104,7 +103,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class JobsPaymentListener implements Listener {
 
-    private final Jobs plugin;
+    private final Jobs plugin = Jobs.getInstance();
     private final String blockMetadata = "BlockOwner";
 
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
@@ -117,8 +116,7 @@ public final class JobsPaymentListener implements Listener {
 	    .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
-    public JobsPaymentListener(Jobs plugin) {
-	this.plugin = plugin;
+    public JobsPaymentListener() {
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
 	    cowMilkingTimer = CacheBuilder.newBuilder()

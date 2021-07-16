@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class AreaCmd implements Cmd {
 
 	if (args.length == 3) {
 	    if (args[0].equalsIgnoreCase("add")) {
-		if (!Jobs.hasPermission(player, "jobs.area.add", true))
+		if (!PermissionUtil.hasPermission(player, "jobs.area.add", true))
 		    return true;
 
 		double bonus = 0D;
@@ -78,7 +79,7 @@ public class AreaCmd implements Cmd {
 
 	if (args.length == 2) {
 	    if (args[0].equalsIgnoreCase("remove")) {
-		if (!Jobs.hasPermission(player, "jobs.area.remove", true))
+		if (!PermissionUtil.hasPermission(player, "jobs.area.remove", true))
 		    return true;
 
 		RestrictedAreaManager ra = Jobs.getRestrictedAreaManager();

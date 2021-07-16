@@ -469,6 +469,6 @@ public class ShopManager {
 	}
 
 	if (!list.isEmpty())
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + list.size() + " shop items!");
+		Jobs.logger().info("Loaded " + list.size() + " shop items!");
     }
 }

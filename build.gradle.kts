@@ -57,13 +57,12 @@ dependencies {
 
 tasks {
     named<ShadowJar>("shadowJar") {
-        archiveBaseName.set("shaded")
         mergeServiceFiles()
         manifest {
             attributes(mapOf("Main-Class" to "com.gamingmesh.jobs.Jobs"))
         }
 
-        val PREFIX = "com.gamingmesh.jobs."
+        val PREFIX = "com.gamingmesh.jobs.lib."
 
         relocate("cloud.commandframework", PREFIX + "cloud")
         relocate("com.zaxxer.hikari", PREFIX + "hikari")

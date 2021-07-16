@@ -35,7 +35,7 @@ public class ConvertCmd implements Cmd {
 		to = "MySQL";
 	    }
 
-	    Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
+	    Jobs.logger().info("Data base was converted from &2" + from + " &eto &2" + to + "&e!");
 	});
 
 	return true;

@@ -65,8 +65,8 @@ public class Language {
 	    else
 		msg = customlocale.isString(key) ? CMIChatColor.translate(customlocale.getString(key)) : missing;
 	} catch (Exception e) {
-	    Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-	    Jobs.consoleMsg(e.getLocalizedMessage());
+		Jobs.logger().error("Cannot read language file for " + key);
+		Jobs.logger().error(e.getLocalizedMessage());
 	    return "";
 	}
 
@@ -90,8 +90,8 @@ public class Language {
 			msg += one;
 		    }
 	    } catch (Exception e) {
-		Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-		Jobs.consoleMsg(e.getLocalizedMessage());
+			Jobs.logger().error("Cannot read language file for " + key);
+			Jobs.logger().error(e.getLocalizedMessage());
 		return "";
 	    }
 	}

@@ -87,7 +87,7 @@ public class JobsManager {
 	    dao = startMysql();
 	} else {
 	    if (!storageMethod.equalsIgnoreCase("sqlite")) {
-		Jobs.consoleMsg("&cInvalid storage method! Changing method to sqlite!");
+			Jobs.logger().error("&cInvalid storage method! Changing method to sqlite!");
 		c.set("storage.method", "sqlite");
 	    }
 

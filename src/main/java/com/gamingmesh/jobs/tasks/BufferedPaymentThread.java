@@ -33,7 +33,7 @@ public class BufferedPaymentThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&e[Jobs] Started buffered payment thread.");
+		Jobs.logger().info("Started buffered payment thread.");
 
 	while (running) {
 	    try {
@@ -48,11 +48,11 @@ public class BufferedPaymentThread extends Thread {
 		    economy.payAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		Jobs.consoleMsg("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
+			Jobs.logger().error("Exception in BufferedPaymentThread, stopping economy payments!");
 		running = false;
 	    }
 	}
-	Jobs.consoleMsg("&e[Jobs] Buffered payment thread shutdown.");
+		Jobs.logger().info("Buffered payment thread shutdown.");
     }
 
     public void shutdown() {

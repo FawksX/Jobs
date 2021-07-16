@@ -149,7 +149,8 @@ public class TitleManager {
 	    }
 
 	int size = titles.size();
-	if (size > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " titles!");
+	if (size > 0) {
+		Jobs.logger().info("Loaded " + size + " titles!");
+	}
     }
 }

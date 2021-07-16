@@ -930,7 +930,7 @@ public class ConfigManager {
 	Jobs.setJobs(jobs);
 
 	if (!jobs.isEmpty()) {
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + jobs.size() + " jobs!");
+		Jobs.logger().info("Loaded " + jobs.size() + " jobs!");
 	}
 
 	ItemBoostManager.load();
@@ -1280,7 +1280,7 @@ public class ConfigManager {
 		    jobItems.put(node.toLowerCase(), new JobItems(node, CMIMaterial.get(id), 1, name, lore, enchants, b, new ArrayList<Job>()));
 		}
 
-		Jobs.consoleMsg("&cRemove Items section from " + jobKey + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
+			Jobs.logger().error("Remove Items section from " + jobKey + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
 	    }
 
 	    // Limited Items
@@ -1438,13 +1438,13 @@ public class ConfigManager {
 
 			quests.add(quest);
 		    } catch (Exception e) {
-			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobFullName);
+				Jobs.logger().error("Can't load " + one + " quest for " + jobFullName);
 			e.printStackTrace();
 		    }
 		}
 
 		job.setQuests(quests);
-		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
+			Jobs.logger().info("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 

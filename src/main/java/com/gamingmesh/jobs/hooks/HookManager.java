@@ -93,7 +93,7 @@ public class HookManager {
     private static boolean setWorldGuard() {
 	if (JobsHook.WorldGuard.isEnabled()) {
 	    worldGuardManager = new WorldGuardManager();
-	    Jobs.consoleMsg("&e[Jobs] WorldGuard detected.");
+	    Jobs.logger().info(" WorldGuard detected.");
 	    return true;
 	}
 
@@ -108,28 +108,28 @@ public class HookManager {
 	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
 	    MythicManager = new MythicMobs4(PLUGIN);
 	} catch (ClassNotFoundException ex) {
-	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
+	    Jobs.logger().error("Your MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
 	    return;
 	}
 
-	Jobs.consoleMsg("&e[Jobs] MythicMobs detected.");
+	Jobs.logger().info(" MythicMobs detected.");
     }
 
     public static void setMcMMOlistener() {
 	try {
 	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 	    pm.registerEvents(new McMMO2_X_listener(), PLUGIN);
-	    Jobs.consoleMsg("&e[Jobs] Registered McMMO 2.x listener");
+	    Jobs.logger().info(" Registered McMMO 2.x listener");
 	} catch (ClassNotFoundException e) {
 	    pm.registerEvents(new McMMO1_X_listener(), PLUGIN);
-	    Jobs.consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
+	    Jobs.logger().info(" Registered McMMO 1.x listener");
 	}
     }
 
     private static void setMyPetManager() {
 	if (JobsHook.MyPet.isEnabled()) {
 	    myPetManager = new MyPetManager();
-	    Jobs.consoleMsg("&e[Jobs] MyPet detected.");
+	    Jobs.logger().info(" MyPet detected.");
 	}
     }
 

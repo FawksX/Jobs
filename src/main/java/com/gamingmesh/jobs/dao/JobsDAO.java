@@ -974,9 +974,9 @@ public abstract class JobsDAO {
 	// Lets convert old fields
 	if (!converted) {
 	    Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-		Jobs.consoleMsg("&6[Jobs] Converting to new database format");
-		convertID();
-		Jobs.consoleMsg("&6[Jobs] Converted to new database format");
+			Jobs.logger().warn("Converting to new database format");
+			convertID();
+			Jobs.logger().info("&6[Jobs] Converted to new database format");
 		converted = true;
 	    }, 60L);
 	}
@@ -2302,12 +2302,12 @@ public abstract class JobsDAO {
 		i++;
 
 		if (ii++ >= 100000) {
-		    Jobs.consoleMsg("&6[Jobs] Loading (" + i + ") BP");
+			Jobs.logger().info("Loading (" + i + ") BP");
 		    ii = 0;
 		}
 	    }
 	    if (i > 0) {
-		Jobs.consoleMsg("&e[Jobs] Loaded " + i + " block protection entries. " + (System.currentTimeMillis() - timer) + "ms");
+			Jobs.logger().info("Loaded " + i + " block protection entries. " + (System.currentTimeMillis() - timer) + "ms");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -2368,8 +2368,9 @@ public abstract class JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (i > 0)
-		Jobs.consoleMsg("&e[Jobs] Saved " + i + " new explorer entries.");
+	    if (i > 0) {
+			Jobs.logger().info("Saved " + i + " new explorer entries.");
+		}
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -2414,7 +2415,7 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(true);
 
 	    if (i > 0)
-		Jobs.consoleMsg("&e[Jobs] Updated " + i + " explorer entries.");
+			Jobs.logger().info("Updated " + i + " explorer entries.");
 
 	} catch (SQLException e) {
 	    e.printStackTrace();

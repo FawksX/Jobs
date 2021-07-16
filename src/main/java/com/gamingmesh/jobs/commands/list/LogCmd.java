@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -35,7 +36,7 @@ public class LogCmd implements Cmd {
 	if (args.length == 0)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	else if (args.length == 1) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.log.others", true))
+	    if (!PermissionUtil.hasPermission(sender, "jobs.command.log.others", true))
 		return true;
 
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);

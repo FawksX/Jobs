@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class QuestsCmd implements Cmd {
 	    jPlayer.resetQuests();
 	} else {
 	    if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
-		if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
+		if (!PermissionUtil.hasPermission(sender, "jobs.command.admin.quests", true))
 		    return true;
 
 		jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
@@ -56,9 +57,9 @@ public class QuestsCmd implements Cmd {
 	    Boolean stopped = null;
 	    String cmd = args[args.length == 1 ? 0 : 1];
 
-	    if (cmd.equalsIgnoreCase("stop") && Jobs.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
+	    if (cmd.equalsIgnoreCase("stop") && PermissionUtil.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
 		stopped = true;
-	    } else if (cmd.equalsIgnoreCase("start") && Jobs.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
+	    } else if (cmd.equalsIgnoreCase("start") && PermissionUtil.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
 		stopped = false;
 	    }
 

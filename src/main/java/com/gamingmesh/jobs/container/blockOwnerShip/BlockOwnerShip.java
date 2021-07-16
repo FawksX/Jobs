@@ -231,7 +231,7 @@ public class BlockOwnerShip {
 		}
 
 		if (total > 0) {
-			Jobs.consoleMsg("&e[Jobs] Loaded " + total + " " + path.toLowerCase() + " for reassigning.");
+			Jobs.logger().info("Loaded " + total + " " + path.toLowerCase() + " for reassigning.");
 		}
 	}
 

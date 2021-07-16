@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import com.gamingmesh.jobs.util.PermissionUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,7 @@ public class ClearOwnershipCmd implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.admin.clearownership", true))
+	    if (!PermissionUtil.hasPermission(sender, "jobs.command.admin.clearownership", true))
 		    return true;
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	} else if (sender instanceof Player)

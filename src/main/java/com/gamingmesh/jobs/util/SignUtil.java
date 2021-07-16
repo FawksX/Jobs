@@ -131,7 +131,7 @@ public class SignUtil {
 	}
 
 	if (!signsByLocation.isEmpty()) {
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + signsByLocation.size() + " top list signs");
+		Jobs.logger().info("Loaded " + signsByLocation.size() + " top list signs");
 	}
     }
 

@@ -27,8 +27,10 @@ public final class JobsPayment14Listener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCook(BlockCookEvent event) {
-	if (!(event.getBlock().getType() != Material.CAMPFIRE) || campPlayers.isEmpty())
-	    return;
+
+    	if (event.getBlock().getType() == Material.CAMPFIRE || campPlayers.isEmpty()) {
+    		return;
+    	}
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;

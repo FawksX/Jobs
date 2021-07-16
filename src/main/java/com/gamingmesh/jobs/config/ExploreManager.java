@@ -42,14 +42,15 @@ public class ExploreManager {
     }
 
     public void load() {
-	if (!exploreEnabled)
-	    return;
+	if (!exploreEnabled) {
+		return;
+	}
 
-	Jobs.consoleMsg("&e[Jobs] Loading explorer data");
+	Jobs.logger().info("&e[Jobs] Loading explorer data");
 	Jobs.getJobsDAO().loadExplore();
 
 	int size = getSize();
-	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (size != 0 ? " (" + size + ")" : "."));
+		Jobs.logger().info("Loaded explorer data" + (size != 0 ? " (" + size + ")" : "."));
     }
 
     public Map<String, ExploreRegion> getWorlds() {

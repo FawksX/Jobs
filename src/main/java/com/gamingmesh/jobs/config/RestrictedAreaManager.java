@@ -231,7 +231,7 @@ public class RestrictedAreaManager {
 
 	int size = restrictedAreas.size();
 	if (size > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " restricted areas!");
+		Jobs.logger().info("Loaded " + size + " restricted areas!");
 
 	try {
 	    conf.save(f);

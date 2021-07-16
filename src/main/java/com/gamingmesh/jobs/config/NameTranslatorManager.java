@@ -161,98 +161,101 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
-	YmlMaker itemFile = new YmlMaker(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_"
-	    + Jobs.getGCManager().localeString + ".yml");
+		YmlMaker itemFile = new YmlMaker(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_"
+				+ Jobs.getGCManager().localeString + ".yml");
 
-	if (!itemFile.getConfigFile().getName().equalsIgnoreCase("en")) {
-	    itemFile.saveDefaultConfig();
+		if (!itemFile.getConfigFile().getName().equalsIgnoreCase("en")) {
+			itemFile.saveDefaultConfig();
+		}
+
+		ConfigurationSection section = itemFile.getConfig().getConfigurationSection("ItemList");
+
+		if (section != null) {
+			listOfNames.clear();
+
+			for (String one : section.getKeys(false)) {
+				String[] firstSplit = one.split("-", 2);
+				String split = firstSplit.length > 0 ? firstSplit[0] : one;
+
+				String[] splitted = split.split(":", 2);
+
+				String id = splitted.length > 0 ? splitted[0] : split;
+				String meta = splitted.length > 1 ? splitted[1] : "";
+
+				String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
+
+				listOfNames.put(CMIMaterial.get(one), new NameList(id, meta, section.getString(one), mcName));
+			}
+
+			if (listOfNames.size() > 0)
+				Jobs.logger().info("Loaded " + listOfNames.size() + " custom item names!");
+		} else
+			Jobs.logger().error("The ItemList section not found in " + itemFile.fileName + " file.");
+
+		if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
+			listOfEntities.clear();
+
+			for (String one : section.getKeys(false)) {
+				String[] firstSplit = one.split("-", 2);
+				String split = firstSplit.length > 0 ? firstSplit[0] : one;
+
+				String[] splitted = split.split(":", 2);
+
+				String id = splitted.length > 0 ? splitted[0] : split;
+				String meta = splitted.length > 1 ? splitted[1] : "";
+				String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
+
+				listOfEntities.add(new NameList(id, meta, section.getString(one), mcName));
+			}
+
+			if (listOfEntities.size() > 0) {
+				Jobs.logger().info("Loaded " + listOfEntities.size() + " custom entity names!");
+			}
+		} else
+			Jobs.logger().error("The EntityList section not found in " + itemFile.fileName + " file.");
+
+		if ((section = itemFile.getConfig().getConfigurationSection("MythicEntityList")) != null) {
+			listOfMMEntities.clear();
+
+			for (String one : section.getKeys(false)) {
+				String name = section.getString(one);
+				listOfMMEntities.put(one.toLowerCase(), new NameList(null, null, name, name));
+			}
+
+			if (listOfMMEntities.size() > 0)
+				Jobs.logger().info("Loaded " + listOfMMEntities.size() + " custom MythicMobs names!");
+		} else
+			Jobs.logger().error("The MythicEntityList section not found in " + itemFile.fileName + " file.");
+
+		if ((section = itemFile.getConfig().getConfigurationSection("EnchantList")) != null) {
+			listOfEnchants.clear();
+
+			for (String one : section.getKeys(false)) {
+				listOfEnchants.put(one.replace("_", "").toLowerCase(), new NameList(one, one, one, section.getString(one)));
+			}
+
+			if (listOfEnchants.size() > 0) {
+				Jobs.logger().info("Loaded " + listOfEnchants.size() + " custom enchant names!");
+			}
+		} else {
+			Jobs.logger().error("The EnchantList section not found in " + itemFile.fileName + " file.");
+
+			if ((section = itemFile.getConfig().getConfigurationSection("ColorList")) != null) {
+				listOfColors.clear();
+
+				for (String one : section.getKeys(false)) {
+					String[] split = one.split("-", 2);
+					String id = split.length > 0 ? split[0] : one;
+					String mcName = split.length > 1 ? split[1] : "";
+					listOfColors.add(new NameList(id, "", section.getString(one), mcName));
+				}
+
+				if (listOfColors.size() > 0)
+					Jobs.logger().info("Loaded " + listOfColors.size() + " custom color names!");
+			} else
+				Jobs.logger().error("The ColorList section not found in " + itemFile.fileName + " file.");
+		}
 	}
-
-	ConfigurationSection section = itemFile.getConfig().getConfigurationSection("ItemList");
-
-	if (section != null) {
-	    listOfNames.clear();
-
-	    for (String one : section.getKeys(false)) {
-		String[] firstSplit = one.split("-", 2);
-		String split = firstSplit.length > 0 ? firstSplit[0] : one;
-
-		String[] splitted = split.split(":", 2);
-
-		String id = splitted.length > 0 ? splitted[0] : split;
-		String meta = splitted.length > 1 ? splitted[1] : "";
-
-		String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
-
-		listOfNames.put(CMIMaterial.get(one), new NameList(id, meta, section.getString(one), mcName));
-	    }
-
-	    if (listOfNames.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfNames.size() + " custom item names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The ItemList section not found in " + itemFile.fileName + " file.");
-
-	if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
-	    listOfEntities.clear();
-
-	    for (String one : section.getKeys(false)) {
-		String[] firstSplit = one.split("-", 2);
-		String split = firstSplit.length > 0 ? firstSplit[0] : one;
-
-		String[] splitted = split.split(":", 2);
-
-		String id = splitted.length > 0 ? splitted[0] : split;
-		String meta = splitted.length > 1 ? splitted[1] : "";
-		String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
-
-		listOfEntities.add(new NameList(id, meta, section.getString(one), mcName));
-	    }
-
-	    if (listOfEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEntities.size() + " custom entity names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The EntityList section not found in " + itemFile.fileName + " file.");
-
-	if ((section = itemFile.getConfig().getConfigurationSection("MythicEntityList")) != null) {
-	    listOfMMEntities.clear();
-
-	    for (String one : section.getKeys(false)) {
-		String name = section.getString(one);
-		listOfMMEntities.put(one.toLowerCase(), new NameList(null, null, name, name));
-	    }
-
-	    if (listOfMMEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfMMEntities.size() + " custom MythicMobs names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The MythicEntityList section not found in " + itemFile.fileName + " file.");
-
-	if ((section = itemFile.getConfig().getConfigurationSection("EnchantList")) != null) {
-	    listOfEnchants.clear();
-
-	    for (String one : section.getKeys(false)) {
-		listOfEnchants.put(one.replace("_", "").toLowerCase(), new NameList(one, one, one, section.getString(one)));
-	    }
-
-	    if (listOfEnchants.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEnchants.size() + " custom enchant names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The EnchantList section not found in " + itemFile.fileName + " file.");
-
-	if ((section = itemFile.getConfig().getConfigurationSection("ColorList")) != null) {
-	    listOfColors.clear();
-
-	    for (String one : section.getKeys(false)) {
-		String[] split = one.split("-", 2);
-		String id = split.length > 0 ? split[0] : one;
-		String mcName = split.length > 1 ? split[1] : "";
-		listOfColors.add(new NameList(id, "", section.getString(one), mcName));
-	    }
-
-	    if (listOfColors.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfColors.size() + " custom color names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + itemFile.fileName + " file.");
-    }
 
     @SuppressWarnings("deprecation")
     void load() {

@@ -494,7 +494,7 @@ public class GeneralConfigManager {
 
 	    CMIMaterial mat = CMIMaterial.get(mName);
 	    if (mat == CMIMaterial.NONE) {
-		Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
+			Jobs.logger().error("Failed to recognize " + one + " entry from config file");
 		continue;
 	    }
 
@@ -595,7 +595,7 @@ public class GeneralConfigManager {
 	    DynamicPaymentEquation.setVariable("totaljobs", 10);
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
 	} catch (Throwable e) {
-	    Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
+		Jobs.logger().error("Dynamic payment equation has an invalid property. Disabling feature!");
 	    useDynamicPayment = false;
 	}
 

@@ -33,7 +33,7 @@ public class DatabaseSaveThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&e[Jobs] Started database save task.");
+		Jobs.logger().info("Started database save task.");
 
 	while (running) {
 	    try {
@@ -46,12 +46,12 @@ public class DatabaseSaveThread extends Thread {
 		Jobs.getPlayerManager().saveAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		Jobs.consoleMsg("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
+			Jobs.logger().error("Exception in DatabaseSaveTask, stopping auto save!");
 		running = false;
 	    }
 	}
 
-	Jobs.consoleMsg("&e[Jobs] Database save task shutdown!");
+		Jobs.logger().info("Database save task shutdown!");
 
     }
 
